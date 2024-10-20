@@ -24,22 +24,22 @@ public class MarcaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> listaPorID(@PathVariable Long id){
+    public ResponseEntity<Map<String, Object>> listaMarcaPorID(@PathVariable Long id){
         return marcaService.listarMarcaPorId(id);
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> agregar(@Valid @RequestBody Marca marca){
+    public ResponseEntity<Map<String, Object>> agregarMarca(@Valid @RequestBody Marca marca){
         return marcaService.agregarMarca(marca);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> editar(@RequestBody Marca marca,@PathVariable Long id){
+    public ResponseEntity<Map<String, Object>> editarMarca(@RequestBody Marca marca, @PathVariable Long id){
         return marcaService.actualizarMarca(marca,id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> eliminar(@PathVariable Long id){
+    public ResponseEntity<Map<String, Object>> eliminarMarca(@PathVariable Long id){
         return marcaService.eliminarMarca(id);
     }
 }

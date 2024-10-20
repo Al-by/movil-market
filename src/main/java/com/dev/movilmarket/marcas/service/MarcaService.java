@@ -1,11 +1,9 @@
 package com.dev.movilmarket.marcas.service;
 
 import com.dev.movilmarket.marcas.model.Marca;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
-import java.util.Objects;
 
 public interface MarcaService {
     public ResponseEntity<Map<String, Object>> listarMarcas();

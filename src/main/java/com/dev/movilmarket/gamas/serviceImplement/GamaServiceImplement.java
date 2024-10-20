@@ -1,8 +1,8 @@
-package com.dev.movilmarket.marcas.serviceImplement;
+package com.dev.movilmarket.gamas.serviceImplement;
 
-import com.dev.movilmarket.marcas.model.Marca;
-import com.dev.movilmarket.marcas.repository.MarcaRepository;
-import com.dev.movilmarket.marcas.service.MarcaService;
+import com.dev.movilmarket.gamas.model.Gama;
+import com.dev.movilmarket.gamas.repository.GamaRepository;
+import com.dev.movilmarket.gamas.service.GamaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,24 +11,24 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class MarcaServiceImplement implements MarcaService {
+public class GamaServiceImplement implements GamaService {
 
     @Autowired
-    private MarcaRepository marcaRepository;
+    private GamaRepository gamaRepository;
 
     //TODO: Error en actualizar
     @Override
-    public ResponseEntity<Map<String, Object>> listarMarcas() {
-        List<Marca> marcas = marcaRepository.findAll();
+    public ResponseEntity<Map<String, Object>> listarGamas() {
+        List<Gama> gamas = gamaRepository.findAll();
         Map<String, Object> respuesta = new HashMap<>();
-        if(!marcas.isEmpty()) {
-            respuesta.put("mensaje", "Lista de marcas");
-            respuesta.put("marcas", marcas);
+        if (!gamas.isEmpty()) {
+            respuesta.put("mensaje", "Nuestras gamas");
+            respuesta.put("gamas", gamas);
             respuesta.put("status", HttpStatus.OK);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-        }else {
-            respuesta.put("mensaje", "No existen registros");
+        } else {
+            respuesta.put("mensaje", "No hay registros");
             respuesta.put("status", HttpStatus.NOT_FOUND);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
@@ -36,17 +36,17 @@ public class MarcaServiceImplement implements MarcaService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> listarMarcaPorId(Long id) {
-        Optional<Marca> marcas = marcaRepository.findById(id);
+    public ResponseEntity<Map<String, Object>> listarGamaPorId(Long id) {
+        Optional<Gama> gama = gamaRepository.findById(id);
         Map<String, Object> respuesta = new HashMap<>();
-        if(marcas.isPresent()) {
-            respuesta.put("mensaje", "Busqueda correcta");
-            respuesta.put("marcas", marcas);
+        if (gama.isPresent()) {
+            respuesta.put("mensaje", "Gama encontrada");
+            respuesta.put("gama", gama);
             respuesta.put("status", HttpStatus.OK);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.OK).body(respuesta);
         }else {
-            respuesta.put("mensaje", "No existen registros");
+            respuesta.put("mensaje", "No hay registros");
             respuesta.put("status", HttpStatus.NOT_FOUND);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
@@ -54,31 +54,31 @@ public class MarcaServiceImplement implements MarcaService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> agregarMarca(Marca marca) {
+    public ResponseEntity<Map<String, Object>> agregarGama(Gama gama) {
         Map<String, Object> respuesta = new HashMap<>();
-        marcaRepository.save(marca);
-        respuesta.put("mensaje", "Registro agregado");
-        respuesta.put("marca", marca);
-        respuesta.put("status", HttpStatus.OK);
+        gamaRepository.save(gama);
+        respuesta.put("mensaje", "Gama agregada");
+        respuesta.put("gama", gama);
+        respuesta.put("status", HttpStatus.CREATED);
         respuesta.put("fecha", new Date());
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> actualizarMarca(Marca marca, Long id) {
+    public ResponseEntity<Map<String, Object>> actualizarGama(Gama gama, Long id) {
         Map<String, Object> respuesta = new HashMap<>();
-        Optional<Marca> marcaExiste = marcaRepository.findById(id);
-        if(marcaExiste.isPresent()) {
-            Marca mrc = marcaExiste.get();
-            marca.setNombreMarca(mrc.getNombreMarca());
-            marcaRepository.save(marca);
-            respuesta.put("mensaje", "Registro actualizado");
-            respuesta.put("marca", marca);
+        Optional<Gama> gamaOptional = gamaRepository.findById(id);
+        if (gamaOptional.isPresent()) {
+            Gama gam = gamaOptional.get();
+            gam.setNombreGama(gam.getNombreGama());
+            gamaRepository.save(gam);
+            respuesta.put("mensaje", "Gama actualizada");
+            respuesta.put("gama", gama);
             respuesta.put("status", HttpStatus.CREATED);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
         } else {
-            respuesta.put("mensaje", "No existen registros con el ID" + id);
+            respuesta.put("mensaje", "No hay registros");
             respuesta.put("status", HttpStatus.NOT_FOUND);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
@@ -86,19 +86,18 @@ public class MarcaServiceImplement implements MarcaService {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> eliminarMarca(Long id) {
+    public ResponseEntity<Map<String, Object>> eliminarGama(Long id) {
         Map<String, Object> respuesta = new HashMap<>();
-        Optional<Marca> marcaExiste = marcaRepository.findById(id);
-        if(marcaExiste.isPresent()) {
-            Marca mrc = marcaExiste.get();
-            marcaRepository.delete(mrc);
-            respuesta.put("mensaje", "Registro eliminado");
+        Optional<Gama> gamaOptional = gamaRepository.findById(id);
+        if (gamaOptional.isPresent()) {
+            Gama gam = gamaOptional.get();
+            gamaRepository.delete(gam);
+            respuesta.put("mensaje", "Gama eliminada");
             respuesta.put("status", HttpStatus.NO_CONTENT);
             respuesta.put("fecha", new Date());
-
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(respuesta);
-        }else {
-            respuesta.put("mensaje", "No se puede borrar la marca con ID" + id);
+        } else {
+            respuesta.put("mensaje", "No se puede borrar la gama con el ID" + id);
             respuesta.put("status", HttpStatus.NOT_FOUND);
             respuesta.put("fecha", new Date());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
